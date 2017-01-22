@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace WinNTULearn
 {
@@ -23,6 +25,10 @@ namespace WinNTULearn
         public MainWindow()
         {
             InitializeComponent();
+            TaskbarIcon taskbarIcon = new TaskbarIcon();
+            taskbarIcon.ToolTip = "NTULearn Downloader";
+            taskbarIcon.Icon = new Icon("Images/logo.jpg");
+            taskbarIcon.Visibility = Visibility.Collapsed;
         }
     }
 }

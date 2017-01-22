@@ -23,5 +23,10 @@ namespace WinNTULearn
         {
             InitializeComponent();
         }
+
+        private void LogInButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
