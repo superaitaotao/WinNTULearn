@@ -27,7 +27,6 @@ namespace WinNTULearn
 
         public static string DownloadFinishedKey = "DownloadFinishedKey";
 
-
         private string baseUrl = "https://ntulearn.ntu.edu.sg";
         private string baseFileUrl = NSHomeDirectory() + "/NTULearn";
         private string username;

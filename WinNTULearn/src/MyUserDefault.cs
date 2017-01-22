@@ -13,10 +13,6 @@ namespace WinNTULearn
 
         private Settings userDefault = Properties.Settings.Default;
 
-        private string latestDownloadedKey = "latestDownloadedFiles";
-
-        private string donwloadedFileUrlsKey = "donwloadedFileUrls";
-
         public void saveCourseFolders(CourseInfo[] courseFolders)
         {
 
@@ -59,8 +55,6 @@ namespace WinNTULearn
             this.userDefault.courseFoldersSetting = allCourseInfo;
 
         }
-
-
 
         public List<CourseInfo> getCourseFolders()
         {
@@ -198,8 +192,6 @@ namespace WinNTULearn
             return userDefault.username;
         }
 
-
-
         public string getPassword()
         {
             return userDefault.password;
@@ -207,70 +199,51 @@ namespace WinNTULearn
 
 
 
-        func saveCredential(username: String, password: String)
+        public void saveCredential(string username, string password)
         {
 
-            print("saved credentials")
+            Console.WriteLine("saved credentials");
 
 
-        userDefaults.set(username, forKey: "username")
+            userDefault.username = username;
 
 
-        userDefaults.set(password, forKey: "password")
-
-
-    }
-
-
-
-        func saveDownloadedFileUrls(fileUrls: Set<String>)
-        {
-
-            var urls: [String] = []
-
-        for url in fileUrls {
-
-            urls.append(url)
-
+            userDefault.password = password;
         }
 
-    userDefaults.set(urls, forKey: donwloadedFileUrlsKey)
+        public void saveDownloadedFileUrls(ISet<string> fileUrls)
+        {
 
-    }
+            List<string> urls = new List<string>(fileUrls);
 
+            userDefault.donwloadedFileUrls = urls;
+        }
 
+        public ISet<string> getDownloadedFileUrls()
+        {
 
-func getDownloadedFileUrls() -> Set<String>{
+            List<string> urls = userDefault.donwloadedFileUrls;
 
-        let urls = userDefaults.array(forKey: donwloadedFileUrlsKey)
+            ISet<string> set;
 
-        var set: Set<String> = Set()
-
-        if urls != nil {
-
-            for url in urls! {
-
-                set.insert(url as! String)
-
+            if (urls != null)
+            {
+                set = new HashSet<string>(urls);
+            }
+            else
+            {
+                set = new HashSet<string>();
             }
 
+            return set;
         }
 
-        return set
+        public void refresh()
+        {
 
-    }
-
-
-
-func refresh()
-{
-
-    userDefaults.removeObject(forKey: donwloadedFileUrlsKey)
-
-        //bad approach...
-
-    NTULearnFetcher.downloadedFileUrls = []
-
-    }
+            userDefault.donwloadedFileUrls = new List<string>();
+            userDefault.Save();
+            NTULearnFetcher.downloadedFileUrls = new List<string>();
+        }
     }
 }
