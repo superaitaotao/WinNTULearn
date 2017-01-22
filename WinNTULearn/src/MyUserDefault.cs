@@ -15,7 +15,6 @@ namespace WinNTULearn
 
         public void saveCourseFolders(CourseInfo[] courseFolders)
         {
-
             Console.WriteLine("course folders saved");
 
             List<Dictionary<string, object>> allCourseInfo = new List<Dictionary<string, object>>();
@@ -23,8 +22,6 @@ namespace WinNTULearn
             Dictionary<string, object> oneCourseInfo;
 
             List<List<object>> oneCourseFolders;
-
-
 
             foreach (CourseInfo course in courseFolders)
             {
@@ -36,8 +33,6 @@ namespace WinNTULearn
                 oneCourseInfo["isChecked"] = course.isChecked;
 
                 oneCourseFolders = new List<List<object>>();
-
-
 
                 for (int i = 0; i < course.folders.Count; i++)
                 {
@@ -58,7 +53,6 @@ namespace WinNTULearn
 
         public List<CourseInfo> getCourseFolders()
         {
-
             List<CourseInfo> courseFolders = new List<CourseInfo>();
 
             List<Dictionary<string, object>> courseArray = userDefault.courseFoldersSetting;
@@ -96,11 +90,9 @@ namespace WinNTULearn
                     oneCourseInfo = new CourseInfo((string)course["courseName"], folders, (bool)course["isChecked"], foldersChecked, foldersUrl);
 
                     courseFolders.Add(oneCourseInfo);
-
                 }
 
             }
-
             return courseFolders;
         }
 
@@ -158,15 +150,11 @@ namespace WinNTULearn
 
             }
 
-
-
             userDefault.latestDownloadedFiles = filesDefault;
-
         }
 
         public void addLatestDownloadedFile(FileInfo file)
         {
-
             var files = getLatestDownloadedFiles();
 
             files.Add(file);
@@ -196,8 +184,6 @@ namespace WinNTULearn
         {
             return userDefault.password;
         }
-
-
 
         public void saveCredential(string username, string password)
         {
