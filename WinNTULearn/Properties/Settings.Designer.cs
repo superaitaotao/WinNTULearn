@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace WinNTULearn.Properties
 {
 
@@ -18,6 +20,8 @@ namespace WinNTULearn.Properties
     {
 
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        internal List<Dictionary<string, object>> courseFoldersSetting;
+        internal List<List<object>> latestDownloadedFiles;
 
         public static Settings Default
         {
