@@ -21,6 +21,7 @@ namespace WinNTULearn.Properties
 
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         internal List<Dictionary<string, object>> courseFoldersSetting;
+        internal List<string> donwloadedFileUrls;
         internal List<List<object>> latestDownloadedFiles;
         internal string password;
         internal string username;
