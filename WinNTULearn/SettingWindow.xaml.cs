@@ -15,16 +15,21 @@ using System.Windows.Shapes;
 namespace WinNTULearn
 {
     /// <summary>
-    /// Interaction logic for LogIn.xaml
+    /// Interaction logic for SettingWindow.xaml
     /// </summary>
-    public partial class LogIn : Window
+    public partial class SettingWindow : Window
     {
-        public LogIn()
+        public SettingWindow()
         {
             InitializeComponent();
         }
 
-        private void LogInButton_Click(object sender, RoutedEventArgs e)
+        private void DoneButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RefershButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
