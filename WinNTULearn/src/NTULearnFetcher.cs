@@ -66,13 +66,13 @@ namespace WinNTULearn
             string logInUri = this.baseUrl + "/webapps/login/";
 
             // Log in
-            using ( var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() } )
+            using (var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() })
             {
                 // Set myCookieContainer
                 this.myCookieContainer = clientHandler.CookieContainer;
 
                 // Use HttpClient to log in
-                using ( var client = new HttpClient(clientHandler) )
+                using (var client = new HttpClient(clientHandler))
                 {
                     // Set a random UserAgent
                     client.DefaultRequestHeaders.Add("User-Agent", this.userAgents[new Random().Next(this.userAgents.Length)]);
@@ -93,7 +93,7 @@ namespace WinNTULearn
                     Console.WriteLine("status code", response.StatusCode);
 
                     // Decide whether log in is successful by looking at whether response contains "Course List"
-                    if ( response.Content.ToString().Contains("Course List") )
+                    if (response.Content.ToString().Contains("Course List"))
                         return new NTUFectherResult(NTUFetcherResultType.Success, "");
                     else
                         return new NTUFectherResult(NTUFetcherResultType.LogInError, "Log In failed");
@@ -103,12 +103,12 @@ namespace WinNTULearn
 
         private string getUrl(string url)
         {
-            if ( url.Length == 0 )
+            if (url.Length == 0)
             {
                 return "";
             }
 
-            if ( url[0] == '/' )
+            if (url[0] == '/')
             {
                 return baseUrl + url;
             }
