@@ -12,9 +12,10 @@ namespace WinNTULearn
             InitializeComponent();
         }
 
-        private void LogInButton_Click(object sender, RoutedEventArgs e)
+        async private void LogInButton_Click(object sender, RoutedEventArgs e)
         {
-
+            System.Console.WriteLine("button clicked");
+            await new NTULearnFetcher().LogInAsync();
         }
     }
 }

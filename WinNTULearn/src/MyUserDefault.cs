@@ -269,7 +269,6 @@ namespace WinNTULearn
         {
             userDefault.donwloadedFileUrls = new List<string>();
             userDefault.Save();
-            NTULearnFetcher.downloadedFileUrls = new List<string>();
         }
     }
 }

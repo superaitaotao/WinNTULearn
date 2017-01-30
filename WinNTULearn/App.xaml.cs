@@ -9,14 +9,14 @@ namespace WinNTULearn
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            //MainWindow mainWindow = new MainWindow();
+            //mainWindow.Show();
 
             LogInWindow logInWindow = new LogInWindow();
             logInWindow.Show();
 
-            SettingWindow settingWindow = new SettingWindow();
-            settingWindow.Show();
+            //SettingWindow settingWindow = new SettingWindow();
+            //settingWindow.Show();
         }
     }
 }
