@@ -85,6 +85,7 @@ namespace WinNTULearn
 
                     // Get response
                     HttpResponseMessage response = await client.PostAsync(logInUri, content);
+                    response.EnsureSuccessStatusCode();
 
                     using (var stream = await response.Content.ReadAsStreamAsync())
                     {
