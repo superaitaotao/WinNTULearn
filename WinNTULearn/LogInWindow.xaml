@@ -12,8 +12,11 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -21,5 +24,6 @@
         <TextBox Grid.Row="1" Padding="5 5 5 5" FontSize="20" Name="UserNameTextBox">Username</TextBox>
         <TextBox Grid.Row="2" Padding="5 5 5 5" FontSize="20" Name="PasswordTextBox">Password</TextBox>
         <Button Grid.Row="3" Padding="5 5 5 5" FontSize="20" Name="LogInButton" Click="LogInButton_Click">Log In</Button>
+        <Label Grid.Row="5" Padding="5 5 5 5" FontSize="15" Name="LogInLabel" Foreground="Red"></Label>
     </Grid>
 </Window>

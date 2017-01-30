@@ -41,7 +41,6 @@ namespace WinNTULearn
         private ISet<string> downloadedFileUrls = MyUserDefault.sharedInstance.getDownloadedFileUrls();
 
         ISet<string> excludedCourses = new HashSet<string>() { "Home Page", "Announcements", "Tools", "Help", "Library Resources", "Information", "Groups" };
-        int numberOfCourses = 0;
 
         // Cookie container from log in, shared with other network activities
         private CookieContainer myCookieContainer;
@@ -51,6 +50,9 @@ namespace WinNTULearn
         /// </summary>
         async public Task<NTUFectherResult> LogInAsync()
         {
+            // Set to accept TLS1.2 and above...
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
             // Log
             Console.WriteLine("logging in ...");
 
@@ -61,7 +63,7 @@ namespace WinNTULearn
             string password = "Galaxy1234#";
 
             // Log in uri
-            Uri logInUri = new Uri(this.baseUrl + "/webapps/login/");
+            string logInUri = this.baseUrl + "/webapps/login/";
 
             // Log in
             using ( var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() } )
@@ -82,22 +84,21 @@ namespace WinNTULearn
                         });
 
                     // Get response
-                    try
-                    {
-                        var response = await client.PostAsync(logInUri, content);
-                        response.EnsureSuccessStatusCode();
-                        // Handle response
-                        Console.WriteLine("status code", response.StatusCode);
-                        Console.WriteLine(response.Content);
-                    }
-                    catch ( Exception e )
-                    {
-                        Console.WriteLine(e);
-                    }
+                    HttpResponseMessage response = await client.PostAsync(logInUri, content);
 
-                    return null;
-                }
-            };
+                    //FileStream stream = new FileStream(@"C:\Dev\response.html", FileMode.Create);
+                    //await response.Content.CopyToAsync(stream);
+
+                    response.EnsureSuccessStatusCode();
+                    Console.WriteLine("status code", response.StatusCode);
+
+                    // Decide whether log in is successful by looking at whether response contains "Course List"
+                    if ( response.Content.ToString().Contains("Course List") )
+                        return new NTUFectherResult(NTUFetcherResultType.Success, "");
+                    else
+                        return new NTUFectherResult(NTUFetcherResultType.LogInError, "Log In failed");
+                };
+            }
         }
 
         private string getUrl(string url)
@@ -122,6 +123,12 @@ namespace WinNTULearn
     {
         public NTUFetcherResultType Type { get; set; }
         public string Message { get; set; }
+
+        public NTUFectherResult(NTUFetcherResultType type, string message)
+        {
+            this.Type = type;
+            this.Message = message;
+        }
     }
 
     public enum NTUFetcherResultType
