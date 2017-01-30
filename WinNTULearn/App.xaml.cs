@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Threading;
 
 namespace WinNTULearn
 {
@@ -17,6 +18,11 @@ namespace WinNTULearn
 
             //SettingWindow settingWindow = new SettingWindow();
             //settingWindow.Show();
+        }
+
+        private void Application_Exception(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            System.Console.WriteLine(e.Exception);
         }
     }
 }

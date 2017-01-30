@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace WinNTULearn
 {
@@ -106,13 +107,72 @@ namespace WinNTULearn
             }
         }
 
-        /// <summary>
-        /// To fetch the list of courses.
+        /// Gets list of courses.
         /// </summary>
-        /// <returns></returns>
-        async public Task<NTUFectherResult> GetCoursesAsync()
+        /// <returns>NTUFetcherResult</returns>
+        async public Task<NTUFectherResult> GetCourseListAsync()
         {
+            CookieCollection cookies = null;
+            // Get Existing Cookie
+            if ( this.myCookieContainer != null )
+                cookies = this.myCookieContainer.GetCookies(new Uri(this.baseUrl));
 
+            // Log in again if cookies expire or not found
+            if ( cookies == null || cookies.Count == 0 || cookies[0].Expired )
+            {
+                NTUFectherResult logInResult = await this.LogInAsync();
+                if ( logInResult.Type == NTUFetcherResultType.LogInError )
+                    return logInResult;
+            }
+
+            // Set url
+            string getCourseListUrl = this.baseUrl + "/webapps/portal/execute/tabs/tabAction";
+
+            // Get Course List with existing cookie
+            using ( var clientHandler = new HttpClientHandler { CookieContainer = this.myCookieContainer } )
+            {
+                using ( var client = new HttpClient(clientHandler) )
+                {
+                    // Set a random UserAgent
+                    client.DefaultRequestHeaders.Add("User-Agent", this.userAgents[new Random().Next(this.userAgents.Length)]);
+
+                    // Set request message
+                    var content = new FormUrlEncodedContent(new Dictionary<string, string>{
+                        { "action","refreshAjaxModule"},
+                        { "modId", "_22_1" },
+                        { "tabId", "_31525_1" },
+                        {"tab_tab_group_id", "_13_1" }
+                    });
+
+                    // Get response
+                    HttpResponseMessage response = await client.PostAsync(getCourseListUrl, content);
+                    response.EnsureSuccessStatusCode();
+
+                    // Write response to file for debugging
+                    FileStream stream = new FileStream(@"C:\Dev\response.html", FileMode.Create);
+                    await response.Content.CopyToAsync(stream);
+                    stream.Close();
+
+                    // Log
+                    Console.WriteLine("status code", response.StatusCode);
+
+                    // Decide whether log in is successful by looking at whether response contains "Click here..."
+                    await this.ParseCourseList(response.Content);
+                };
+
+                return null;
+            }
+
+        }
+
+        async private Task<NTULearnFetcher> ParseCourseList(HttpContent content)
+        {
+            XDocument document = XDocument.Load(await content.ReadAsStreamAsync());
+            IEnumerable<XElement> courseElements =
+                from element in document.Elements()
+                where element.Name == "li"
+                select element;
+            return null;
         }
 
         private string getUrl(string url)
