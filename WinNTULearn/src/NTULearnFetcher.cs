@@ -86,19 +86,32 @@ namespace WinNTULearn
                     // Get response
                     HttpResponseMessage response = await client.PostAsync(logInUri, content);
 
-                    //FileStream stream = new FileStream(@"C:\Dev\response.html", FileMode.Create);
-                    //await response.Content.CopyToAsync(stream);
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        StreamReader reader = new StreamReader(stream);
+                        string result = reader.ReadToEnd();
 
-                    response.EnsureSuccessStatusCode();
-                    Console.WriteLine("status code", response.StatusCode);
+                        response.EnsureSuccessStatusCode();
+                        Console.WriteLine(response.StatusCode);
+                        Console.WriteLine(result);
 
-                    // Decide whether log in is successful by looking at whether response contains "Course List"
-                    if (response.Content.ToString().Contains("Course List"))
-                        return new NTUFectherResult(NTUFetcherResultType.Success, "");
-                    else
-                        return new NTUFectherResult(NTUFetcherResultType.LogInError, "Log In failed");
+                        // Decide whether log in is successful by looking at whether response contains "Course List"
+                        if (result.Contains("document.location.replace('https://ntulearn.ntu.edu.sg/webapps/portal/execute/defaultTab');"))
+                            return new NTUFectherResult(NTUFetcherResultType.Success, "");
+                        else
+                            return new NTUFectherResult(NTUFetcherResultType.LogInError, "Log In failed");
+                    }
                 };
             }
+        }
+
+        /// <summary>
+        /// To fetch the list of courses.
+        /// </summary>
+        /// <returns></returns>
+        async public Task<NTUFectherResult> GetCoursesAsync()
+        {
+
         }
 
         private string getUrl(string url)
